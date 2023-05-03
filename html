@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sketch</title>
+
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        background-color: black;
+      }
+
+      canvas {
+        display: block;
+      }
+    </style>
+
+
+    <script src="libraries/p5.min.js"></script>
+    <script src="libraries/p5.sound.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/IDMNYU/p5.js-speech@0.0.3/lib/p5.speech.js"></script>
+    <script src="p5.localMessage.js" charset="utf-8"></script>
+
+  </head>
+
+  <body>
+    <script>
+    let myRec = new p5.SpeechRec();
+myRec.continuous = true;
+myRec.interimResults = false;
+
+let data = {}
+
+function setup() {
+  registerServiceWorker('service-worker.js');
+
+  createCanvas(windowWidth, windowHeight);
+  background(0);
+  textSize(20);
+  fill(255);
+  textFont('Georgia');
+  textAlign(CENTER);
+  myRec.start();
+  myRec.onResult = showResult;
+}
+
+function draw() {
+  //don't 
+}
+
+function showResult() {
+  fill(255);
+  if(myRec.resultValue==true) {
+    x = random(0, width);
+    y = random(0, height);
+    
+    text(myRec.resultString, x, y);
+    console.log(myRec.resultString)
+  }
+
+  data.x = x
+  data.y = y
+  data.phrase = myRec.resultString
+
+  sendMessage(data);
+
+} 
+    </script>
+  </body>
+</html>
